@@ -352,6 +352,37 @@ theorem dispositions (v : Nat → V) (φ : Fm) :
   · unfold OnCredit; rw [ne_eq, hT, nE, nS]
   · unfold Open; rw [ne_eq (kev v φ), hF, nE, nS]
 
+/-! ## Where the bridge ends: ON CREDIT vs OPEN is not a property of the readings
+
+ZTL's greedy register `evalF` is strong Kleene with the assertion ↑ (Z ↦ F) at EVERY connective (ZTL `*_is_up_kleene`):
+an intermediate result not yet proved counts as false. That is a property of the formula's SHAPE, not of its classical
+content. `credit_not_semantic`: p and ¬¬p, with p dirty, have the same truth under every uniform reading and under every
+occurrence reading — classically one statement — yet ZTL calls p OPEN and ¬¬p ON CREDIT. So no translation through
+readings can separate ON CREDIT from OPEN; the bridge stops there by a theorem, not by an omission. -/
+
+theorem not_enum_atom : ¬ Enum (fun _ => Z) (.atom 0) := fun h => by
+  have := h (fun _ => F) (fun _ hz => absurd rfl hz) (fun _ e => nomatch e)
+  exact nomatch this
+
+theorem not_stableF_atom : ¬ StableF (fun _ => Z) (.atom 0) := fun h => by
+  have := h (fun _ => T) (fun _ hz => absurd rfl hz) (fun _ e => nomatch e)
+  exact nomatch this
+
+theorem credit_not_semantic :
+    (∀ J, semO (fun _ => Z) J (.atom 0) ↔ semO (fun _ => Z) J (.neg (.neg (.atom 0)))) ∧
+    (∀ I, semU (fun _ => Z) I (.atom 0) ↔ semU (fun _ => Z) I (.neg (.neg (.atom 0)))) ∧
+    Open (fun _ => Z) (.atom 0) ∧ OnCredit (fun _ => Z) (.neg (.neg (.atom 0))) := by
+  have nE2 : ¬ Enum (fun _ => Z) (.neg (.neg (.atom 0))) := fun h => by
+    have := h (fun _ => F) (fun _ hz => absurd rfl hz) (fun _ e => nomatch e)
+    exact nomatch this
+  have nS2 : ¬ StableF (fun _ => Z) (.neg (.neg (.atom 0))) := fun h => by
+    have := h (fun _ => T) (fun _ hz => absurd rfl hz) (fun _ e => nomatch e)
+    exact nomatch this
+  refine ⟨fun J => ⟨fun h n => n h, fun h => Classical.byContradiction h⟩,
+    fun I => ⟨fun h n => n h, fun h => Classical.byContradiction h⟩,
+    ⟨(fun e => nomatch e), (fun e => nomatch e), not_enum_atom, not_stableF_atom⟩,
+    ⟨rfl, (fun e => nomatch e), nE2, nS2⟩⟩
+
 end ZClassical.Bridge
 
 #print axioms ZClassical.Bridge.enum_iff
@@ -360,3 +391,4 @@ end ZClassical.Bridge
 #print axioms ZClassical.Bridge.kev_T_iff
 #print axioms ZClassical.Bridge.kev_F_iff
 #print axioms ZClassical.Bridge.dispositions
+#print axioms ZClassical.Bridge.credit_not_semantic
