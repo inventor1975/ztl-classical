@@ -9,6 +9,10 @@ rev = "v4.29.1"
 [[lean_lib]]
 name = "ZClassical"
 
+[[lean_lib]]
+name = "KS23"
+moreLeanArgs = ["-j", "4"]
+
 [[require]]
 name = "ztl"
 git = "https://github.com/inventor1975/ZTL"

@@ -13,6 +13,7 @@ counted as zero-axiom.
 | `ZClassical/Zeta.lean` | `riemannZeta_neg_one`: ζ(−1) = −1/12 (from Mathlib's `riemannZeta_neg_nat_eq_bernoulli`); `riemannZeta_zero_val`: ζ(0) = −1/2; `shifted_value`: ζ(−1) − ζ(0) = 5/12 | `[propext, Classical.choice, Quot.sound]` |
 | `ZClassical/Bridge.lean` | `dispositions`: each of ZTL's six dispositions as a statement about classical propositions (below); `enum_iff`, `stableF_iff`, `rd_iff`, `kev_T_iff`, `kev_F_iff`; `credit_not_semantic` (where the translation must stop) | `[propext, Classical.choice, Quot.sound]` |
 | `ZClassical/ZetaReading.lean` | `selfEq_disposition`: "S = S" for S = 1 + 2 + 3 + … is EARNED IF STABLE and not EARNED; the reading that blocks EARNED is ζ's own (ζ(−1) for S, ζ(−1) − ζ(0) for 0 + S) | `[propext, Classical.choice, Quot.sound]` |
+| `KS23/` | `KS23.G07c6.not_realizable`, `KS23.G266c.not_realizable`: the two order-23 Kochen–Specker candidates left open in [kscert](https://github.com/shayaansiddique06/kscert)'s `unresolved.json` have no real realization (interval certificates checked by the Lean kernel; see `KS23/README.md`). Not a default target: `lake build KS23` (~1.7 h of kernel checks) | `[propext, Classical.choice, Quot.sound]` |
 
 ## The bridge: ZTL's verdicts in classical terms
 
@@ -48,6 +49,7 @@ Lean `leanprover/lean4:v4.29.1`, Mathlib `v4.29.1`:
 
     lake exe cache get    # Mathlib's prebuilt files
     lake build            # prints each theorem's axioms
+    lake build KS23       # the Kochen–Specker certificates (not a default target; ~1.7 h)
 
 ## License and authorship
 
